@@ -31,18 +31,11 @@ class Animation(QtWidgets.QMainWindow) :
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.onTimer) 
         
-        self.x1=0.0
-        self.y1=0.0
-        self.t=0.0
-        
         
     def paintEvent(self,ev) :
        
         qp=QtGui.QPainter()
         qp.begin(self)
-        
-        qp.drawEllipse(395,200,10,10)
-        qp.drawEllipse(595+self.x1,200+self.y1,50,50)
         
         qp.end()
 
@@ -53,21 +46,19 @@ class Animation(QtWidgets.QMainWindow) :
        
         self.update()
         
-    def onStart(self) :
-        
-       11 
-        
     def onStop(self) :
         self.timer.stop()
         
 app = QtWidgets.QApplication(sys.argv)
-widget = Animation()
+widget = AnimationExample()
 widget.show()
 sys.exit(app.exec_())  
 
+
+
         
         
- 
+
     
     
     
