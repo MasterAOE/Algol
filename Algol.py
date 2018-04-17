@@ -14,6 +14,7 @@ RAD = ma.pi/180
 
 PI = ma.pi
 
+<<<<<<< HEAD
 """class Lab119(QtWidgets.QMainWindow) :
 
     def __init__(self) :
@@ -144,24 +145,12 @@ PI = ma.pi
 
         h=0.01
         
+=======
+class Recognition():
+>>>>>>> 3af4e5adbac08972f14d781e50f9d99844d9f794
     
-        p01=QtCore.QPointF(400, 30)
-        p1=QtCore.QPointF(400+ self.x1, 200)
-        p02=QtCore.QPointF(600, 30)
-        p2=QtCore.QPointF(600+ self.x2, 200)
-        
-        L1=30+170*(self.l1/self.l)
-        
-        pl1=QtCore.QPointF(400+ self.x3, L1)
-        pl2=QtCore.QPointF(425+ self.x4, L1+20)
-        pl3=QtCore.QPointF(450+ self.x5, L1-20)
-        pl4=QtCore.QPointF(475+ self.x6, L1+20)
-        pl5=QtCore.QPointF(500+ self.x7, L1-20)
-        pl6=QtCore.QPointF(525+ self.x8, L1+20)
-        pl7=QtCore.QPointF(550+ self.x9, L1-20)
-        pl8=QtCore.QPointF(575+ self.x10, L1+20)
-        pl9=QtCore.QPointF(600+ self.x11, L1)
     
+<<<<<<< HEAD
         
         qp.drawEllipse(395+self.x1,200,10,10)
         qp.drawEllipse(595+self.x2,200,10,10)
@@ -335,3 +324,5 @@ app = QtWidgets.QApplication(sys.argv)
 widget = Lab119()
 widget.show()
 sys.exit(app.exec_())"""
+=======
+>>>>>>> 3af4e5adbac08972f14d781e50f9d99844d9f794
