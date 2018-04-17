@@ -13,15 +13,11 @@ g=9.8
 RAD = ma.pi/180
 
 PI = ma.pi
-
-class Recognition():
-    d,ffdsf,s
-    shishakovnamber1
-    
-    
-    
-    
-    
-    
 class Circulation():
+class Recognition():
+
+    
+    
+    
+    
     
