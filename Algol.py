@@ -14,7 +14,7 @@ RAD = ma.pi/180
 
 PI = ma.pi
 
-class Lab119(QtWidgets.QMainWindow) :
+"""class Lab119(QtWidgets.QMainWindow) :
 
     def __init__(self) :
         QtWidgets.QMainWindow.__init__(self)
@@ -334,4 +334,4 @@ class Lab119(QtWidgets.QMainWindow) :
 app = QtWidgets.QApplication(sys.argv)
 widget = Lab119()
 widget.show()
-sys.exit(app.exec_())
+sys.exit(app.exec_())"""
