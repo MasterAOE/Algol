@@ -41,6 +41,8 @@ class Animation(QtWidgets.QMainWindow) :
         qp=QtGui.QPainter()
         qp.begin(self)
         
+        
+        
         qp.drawEllipse(395,200,70,70)
         qp.drawEllipse(595+self.x1,225+self.y1,20,20)
         
