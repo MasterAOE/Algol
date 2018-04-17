@@ -15,6 +15,8 @@ RAD = ma.pi/180
 PI = ma.pi
 
 class Recognition():
+    d,ffdsf,s
+    shishakovnamber1
     
     
     
