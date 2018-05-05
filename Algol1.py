@@ -115,12 +115,21 @@ class Animation(QtWidgets.QMainWindow) :
 
 class Data():
     def qwe(self):
-        kol = int(input(self.x1))
+        
+        n=5
         a = []
-        for i in range(kol):
+        for i in range(n):
+            kol = int(input(self.x1))
+            a.append([])
+            a[i]= kol 
+        for i in a:
+            print(i)
+            
+            
+            '''
             a.append([int(j) for j in input().split()])
             print(a[i], end=' ')
-        print()
+        print()'''
   
         
 class rty() :
