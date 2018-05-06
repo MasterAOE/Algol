@@ -102,17 +102,18 @@ class Animation(QtWidgets.QMainWindow) :
         qp.begin(self)
         
         self.x1=200*ma.cos(self.t)-150
-        self.y1=200*ma.sin(self.t)
+        self.y1=200*ma.sin(self.t)   
+        
         
         qp.drawEllipse(395,200,70,70)
         qp.drawEllipse(595+self.x1,225+self.y1,20,20)
         
         qp.end()
-
+        
         
     def onTimer(self) :
         
-        self.t+=1
+        self.t+=0.5
        
         self.update()
         
@@ -123,11 +124,35 @@ class Animation(QtWidgets.QMainWindow) :
         
     def onStop(self) :
         self.timer.stop()
+
+class Data():
+    def qwe(self):
         
+        n=5
+        a = []
+        for i in range(n):
+            kol = int(input(self.x1))
+            a.append([])
+            a[i]= kol 
+        for i in a:
+            print(i)
+            
+            
+            '''
+            a.append([int(j) for j in input().split()])
+            print(a[i], end=' ')
+        print()'''
+  
+        
+class rty() :
+        p=[[1,2,3],[4,5,6],[7,8,9]]
+        print (p)         
 app = QtWidgets.QApplication(sys.argv)
+
 widget = Animation()
 widget.show()
 sys.exit(app.exec_())  
+
 
         
         
