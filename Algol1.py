@@ -12,6 +12,18 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 g=9.8
 RAD = ma.pi/180
 PI = ma.pi
+n = 10000
+a = [[0] * n for i in range(2)]
+for i in range(2):
+    for j in range(n):
+        if i < j:
+            a[i][j] = 0
+        elif i > j:
+            a[i][j] = 2
+        else:
+            a[i][j] = 1
+for row in a:
+    print(' '.join([str(elem) for elem in row]))
 
 class Animation(QtWidgets.QMainWindow) :
     def __init__(self) :
