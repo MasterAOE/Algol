@@ -1,7 +1,7 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Fri Dec 15 16:41:58 2017
-
 @author: user
 """
 
@@ -16,7 +16,7 @@ PI = ma.pi
 class Animation(QtWidgets.QMainWindow) :
     def __init__(self) :
         QtWidgets.QMainWindow.__init__(self)
-        self.resize(7000, 8000)
+        self.resize(1000, 800)
         self.setWindowTitle('Circ')
         
         self.parama1 = QtWidgets.QLineEdit("1",self)
@@ -90,7 +90,7 @@ class Animation(QtWidgets.QMainWindow) :
         qp.begin(self)
         
         self.x1=200*ma.cos(self.t)-150
-        self.y1=200*ma.sin(self.t)   
+        self.y1=200*ma.sin(self.t)
         
         
         qp.drawEllipse(395,200,70,70)
@@ -101,43 +101,56 @@ class Animation(QtWidgets.QMainWindow) :
         
     def onTimer(self) :
         
-        self.t+=0.5
-       
+        self.t+=0.1
         self.update()
         
     def onStart(self) :
         
        self.t=0.0
        self.timer.start()
+       
         
     def onStop(self) :
         self.timer.stop()
 
 class Data():
-    def qwe(self):
-        kol = int(input(self.x1))
-        a = []
-        for i in range(kol):
-            a.append([int(j) for j in input().split()])
-            print(a[i], end=' ')
-        print()
-  
         
-class rty() :
-        p=[[1,2,3],[4,5,6],[7,8,9]]
-        print (p)         
+        
+        a = [[0] * 100 for i in range(2)]
+        t=0.0
+        
+        R1=70
+        R2=20
+        T1=5000
+        T2=1500
+        
+        for j in range(100):
+            
+            a[0][j] = t
+            t+=0.1
+            
+            x1=200*ma.cos(t)-150+595-R2
+            y1=200*ma.sin(t)
+            x0=395+R1
+            y0=200+R1
+            s=ma.fabs(x1-x0)
+            S1=R1*R1*ma.acos(s/R1)
+            S2=s*ma.sqrt(R1*R1-s*s)
+            if y1>y0 and x1>x0:
+                S0=S1-S2
+            if y1>y0 and x1>x0:
+                S0=S1+S2
+                
+                
+            I=ma.sin(t)
+            a[1][j] = s
+                
+
+        for row in a:
+            print(' '.join([str(elem) for elem in row]))
+            
 app = QtWidgets.QApplication(sys.argv)
 
 widget = Animation()
 widget.show()
 sys.exit(app.exec_())  
-
-
-        
-        
- 
-    
-    
-    
-    
-    
