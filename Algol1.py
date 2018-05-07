@@ -174,7 +174,7 @@ class Chlenkita():
 
         for row in a:
             print(' '.join([str(elem) for elem in row]))
-            
+           
             
 class Mordor():
     def Data(self, event):
