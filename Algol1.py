@@ -118,13 +118,13 @@ class Animation(QtWidgets.QMainWindow) :
 class Chlenkita():
         
         
-        a = [[0] * 100 for i in range(2)]
+        a = [[0] * 1000 for i in range(2)]
         t=0.0
         sigma=1
         R1=70
         R2=20
         T1=5000
-        T2=1500
+        T2=5000
         
         I1=4*PI*R1*R1*sigma*T1*T1*T1*T1
         I2=4*PI*R2*R2*sigma*T2*T2*T2*T2
@@ -135,10 +135,10 @@ class Chlenkita():
         T14=T1*T1*T1*T1
         T24=T2*T2*T2*T2
         I0=I1+I2
-        for j in range(100):
+        for j in range(1000):
             
             a[0][j] = t
-            t+=0.1
+            t+=0.01
             
             x1=200*ma.cos(t)-150+595-R2
             y1=200*ma.sin(t)
@@ -168,10 +168,8 @@ class Chlenkita():
                 I=dI1+dI2
             else:
                 I=I0
-                
-                
-            I=ma.sin(t)
-            a[1][j] = s
+
+            a[1][j] = I
                 
 
         for row in a:
