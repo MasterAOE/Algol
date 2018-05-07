@@ -127,6 +127,11 @@ class Chlenkita():
         I1=4*PI*R1*R1*sigma*T1*T1*T1*T1
         I2=4*PI*R2*R2*sigma*T2*T2*T2*T2
         
+        S01=PI*R1*R1
+        S02=PI*R2*R2
+        
+        T14=T1*T1*T1*T1
+        T24=T2*T2*T2*T2
         I0=I1+I2
         for j in range(100):
             
@@ -143,14 +148,24 @@ class Chlenkita():
                 S2=s*ma.sqrt(R1*R1-s*s)
                 if y1>y0 and x1>x0:
                     S0=S1-S2
+                    dI2=S0/S02*I2
+                    dI1=I1
                 if y1>y0 and x1<x0:
                     S0=S1+S2
+                    dI2=S0/S02*I2
+                    dI1=I1
                 if y1<y0 and x1<x0:
                     S0=S1+S2
+                    dI1=S0/S01*I1
+                    dI2=I2
                 if y1<y0 and x1>x0:
                     S0=S1-S2
+                    dI1=S0/S01*I1
+                    dI2=I2
+                    
+                I=dI1+dI2
             else:
-                    I=I0
+                I=I0
                 
                 
             I=ma.sin(t)
