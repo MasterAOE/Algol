@@ -8,6 +8,7 @@ Created on Fri Dec 15 16:41:58 2017
 
 import sys
 import math as ma
+import numpy as np
 from PyQt5 import QtGui, QtCore, QtWidgets
 g=9.8
 RAD = ma.pi/180
@@ -82,6 +83,7 @@ class Animation(QtWidgets.QMainWindow) :
         self.x1=0.0
         self.y1=0.0
         self.t=0.0
+        self.k=1
         
         
     def paintEvent(self,ev) :
@@ -91,8 +93,24 @@ class Animation(QtWidgets.QMainWindow) :
         
         self.x1=200*ma.cos(self.t)-150
         self.y1=200*ma.sin(self.t)
+        print (self.x1,self.y1, self.t)
+        n = 3
+        polus = [[0] * 1000 for j in range(2)]
         
-        
+        for i in range(self.k):
+            polus.append([])
+            polus[i].append(self.x1)
+            
+        for row in polus:
+             print(' '.join([str(elem) for elem in row]))
+            
+        print(self.k)   
+        'for i in polus:'
+        print(polus)
+       
+             
+     
+        'qp.drawPolygon( QtGui.QPolygonF(polus))'      
         qp.drawEllipse(395,200,70,70)
         qp.drawEllipse(595+self.x1,225+self.y1,20,20)
         
@@ -178,7 +196,7 @@ class Chlenkita():
             print(' '.join([str(elem) for elem in row]))
             
             
-class Mordor():
+'''class Mordor():
     def Data(self, event):
          qp = QtGui.QPainter()
          qp.begin(self)        
@@ -190,19 +208,13 @@ class Mordor():
         
          qp.drawRect(r)
         
-         R = np.min((self.width(),self.height()))/3
          N = 500;
-         t=np.linspace(0, 2*np.pi, N)
-         x = R*np.sin(self.x*t)
-         y = -R*np.cos(self.y*t+self.phi/180.0*np.pi)
-         x+=self.width()/2;
-         y+=self.height()/2;
-        
+         
          pts= [ QtCore.QPointF(x[i],y[i]) for i in range(0,N) ]
         
          qp.drawPolygon( QtGui.QPolygonF(pts))
          qp.end()
-            
+'''            
 app = QtWidgets.QApplication(sys.argv)
 
 widget = Animation()
