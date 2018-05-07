@@ -113,17 +113,21 @@ class Animation(QtWidgets.QMainWindow) :
     def onStop(self) :
         self.timer.stop()
 
-class Data():
+class Chlenkita():
         
         
         a = [[0] * 100 for i in range(2)]
         t=0.0
-        
+        sigma=1
         R1=70
         R2=20
         T1=5000
         T2=1500
         
+        I1=4*PI*R1*R1*sigma*T1*T1*T1*T1
+        I2=4*PI*R2*R2*sigma*T2*T2*T2*T2
+        
+        I0=I1+I2
         for j in range(100):
             
             a[0][j] = t
@@ -134,12 +138,19 @@ class Data():
             x0=395+R1
             y0=200+R1
             s=ma.fabs(x1-x0)
-            S1=R1*R1*ma.acos(s/R1)
-            S2=s*ma.sqrt(R1*R1-s*s)
-            if y1>y0 and x1>x0:
-                S0=S1-S2
-            if y1>y0 and x1>x0:
-                S0=S1+S2
+            if s<=R1:
+                S1=R1*R1*ma.acos(s/R1)
+                S2=s*ma.sqrt(R1*R1-s*s)
+                if y1>y0 and x1>x0:
+                    S0=S1-S2
+                if y1>y0 and x1<x0:
+                    S0=S1+S2
+                if y1<y0 and x1<x0:
+                    S0=S1+S2
+                if y1<y0 and x1>x0:
+                    S0=S1-S2
+            else:
+                    I=I0
                 
                 
             I=ma.sin(t)
