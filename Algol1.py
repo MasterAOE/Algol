@@ -112,6 +112,8 @@ class Animation(QtWidgets.QMainWindow) :
         
     def onStop(self) :
         self.timer.stop()
+         
+    
 
 class Chlenkita():
         
@@ -174,6 +176,32 @@ class Chlenkita():
 
         for row in a:
             print(' '.join([str(elem) for elem in row]))
+            
+            
+class Mordor():
+    def Data(self, event):
+         qp = QtGui.QPainter()
+         qp.begin(self)        
+        
+         pen = QtGui.QPen(QtGui.QColor(120,20,100),1)
+         qp.setPen(pen)
+        
+         r=self.rect().adjusted(10,10,-10,-10)
+        
+         qp.drawRect(r)
+        
+         R = np.min((self.width(),self.height()))/3
+         N = 500;
+         t=np.linspace(0, 2*np.pi, N)
+         x = R*np.sin(self.x*t)
+         y = -R*np.cos(self.y*t+self.phi/180.0*np.pi)
+         x+=self.width()/2;
+         y+=self.height()/2;
+        
+         pts= [ QtCore.QPointF(x[i],y[i]) for i in range(0,N) ]
+        
+         qp.drawPolygon( QtGui.QPolygonF(pts))
+         qp.end()
             
 app = QtWidgets.QApplication(sys.argv)
 
