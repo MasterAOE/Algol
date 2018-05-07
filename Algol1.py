@@ -134,12 +134,15 @@ class Data():
             x0=395+R1
             y0=200+R1
             s=ma.fabs(x1-x0)
-            S1=R1*R1*ma.acos(s/R1)
-            S2=s*ma.sqrt(R1*R1-s*s)
-            if y1>y0 and x1>x0:
-                S0=S1-S2
-            if y1>y0 and x1>x0:
-                S0=S1+S2
+            if s<=R1:
+                S1=R1*R1*ma.acos(s/R1)
+                S2=s*ma.sqrt(R1*R1-s*s)
+                if y1>y0 and x1>x0:
+                    S0=S1-S2
+                if y1>y0 and x1<x0:
+                    S0=S1+S2
+            else:
+                    S0=0
                 
                 
             I=ma.sin(t)
