@@ -14,6 +14,7 @@ g=9.8
 RAD = ma.pi/180
 PI = ma.pi
 
+
 class Animation(QtWidgets.QMainWindow) :
     def __init__(self) :
         QtWidgets.QMainWindow.__init__(self)
@@ -93,24 +94,9 @@ class Animation(QtWidgets.QMainWindow) :
         
         self.x1=200*ma.cos(self.t)-150
         self.y1=200*ma.sin(self.t)
-        print (self.x1,self.y1, self.t)
-        n = 3
-        polus = [[0] * 1000 for j in range(2)]
-        
-        for i in range(self.k):
-            polus.append([])
-            polus[i].append(self.x1)
-            
-        for row in polus:
-             print(' '.join([str(elem) for elem in row]))
-            
-        print(self.k)   
-        'for i in polus:'
-        print(polus)
-       
-             
-     
-        'qp.drawPolygon( QtGui.QPolygonF(polus))'      
+       # print (self.x1,self.y1, self.t)
+
+    
         qp.drawEllipse(395,200,70,70)
         qp.drawEllipse(595+self.x1,225+self.y1,20,20)
         
@@ -141,7 +127,7 @@ class Chlenkita():
         sigma=1
         R1=70
         R2=20
-        T1=5000
+        T1=3000
         T2=5000
         
         I1=4*PI*R1*R1*sigma*T1*T1*T1*T1
@@ -153,6 +139,9 @@ class Chlenkita():
         T14=T1*T1*T1*T1
         T24=T2*T2*T2*T2
         I0=I1+I2
+        
+        my_file = open('snake.txt', 'w')
+        
         for j in range(1000):
             
             a[0][j] = t
@@ -161,58 +150,46 @@ class Chlenkita():
             x1=200*ma.cos(t)-150+595-R2
             y1=200*ma.sin(t)
             x0=395+R1
-            y0=200+R1
+            #y0=200+R1
+            y0=0
             s=ma.fabs(x1-x0)
             if s<=R1:
                 S1=R1*R1*ma.acos(s/R1)
                 S2=s*ma.sqrt(R1*R1-s*s)
                 if y1>y0 and x1>x0:
                     S0=S1-S2
-                    dI2=S0/S02*I2
+                    dI2=(S0/S02)*I2
                     dI1=I1
                 if y1>y0 and x1<x0:
                     S0=S1+S2
-                    dI2=S0/S02*I2
+                    dI2=(1-S0/S02)*I2
                     dI1=I1
                 if y1<y0 and x1<x0:
                     S0=S1+S2
-                    dI1=S0/S01*I1
+                    dI1=(1-S0/S01)*I1
                     dI2=I2
                 if y1<y0 and x1>x0:
                     S0=S1-S2
-                    dI1=S0/S01*I1
+                    dI1=(1-S0/S01)*I1
                     dI2=I2
                     
                 I=dI1+dI2
+                a[1][j] = I
+                
             else:
                 I=I0
 
-            a[1][j] = I
+                a[1][j] = I
                 
+            Is=str(a[1][j])
+            ts=str(t)
+            my_file.write(ts+'          '+Is+'\n')
 
         for row in a:
             print(' '.join([str(elem) for elem in row]))
            
-            
-'''class Mordor():
-    def Data(self, event):
-         qp = QtGui.QPainter()
-         qp.begin(self)        
+        my_file.close()
         
-         pen = QtGui.QPen(QtGui.QColor(120,20,100),1)
-         qp.setPen(pen)
-        
-         r=self.rect().adjusted(10,10,-10,-10)
-        
-         qp.drawRect(r)
-        
-         N = 500;
-         
-         pts= [ QtCore.QPointF(x[i],y[i]) for i in range(0,N) ]
-        
-         qp.drawPolygon( QtGui.QPolygonF(pts))
-         qp.end()
-'''            
 app = QtWidgets.QApplication(sys.argv)
 
 widget = Animation()
