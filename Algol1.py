@@ -93,7 +93,7 @@ class Animation(QtWidgets.QMainWindow) :
         qp.begin(self)
         
         self.x1=200*ma.cos(self.t)-150
-        self.y1=200*ma.sin(self.t)
+        self.y1=-200*ma.sin(self.t)
        # print (self.x1,self.y1, self.t)
 
     
@@ -140,6 +140,12 @@ class Chlenkita():
         T24=T2*T2*T2*T2
         I0=I1+I2
         
+        x0=395+R1
+        #y0=200+R1
+        y0=0
+        print(x0)
+        print(y0)
+        
         my_file = open('snake.txt', 'w')
         
         for j in range(1000):
@@ -147,29 +153,28 @@ class Chlenkita():
             a[0][j] = t
             t+=0.01
             
-            x1=200*ma.cos(t)-150+595-R2
+            x1=200*ma.cos(t)-150+595
             y1=200*ma.sin(t)
-            x0=395+R1
-            #y0=200+R1
-            y0=0
+
+            
             s=ma.fabs(x1-x0)
             if s<=R1:
                 S1=R1*R1*ma.acos(s/R1)
                 S2=s*ma.sqrt(R1*R1-s*s)
-                if y1>y0 and x1>x0:
-                    S0=S1-S2
-                    dI2=(S0/S02)*I2
+                if y1>y0 and (x1-R2)>x0:
+                    S0=S2-S1
+                    dI2=(1-S0/S02)*I2
                     dI1=I1
-                if y1>y0 and x1<x0:
+                if y1>y0 and (x1+R2)<(x0-2*R1):
                     S0=S1+S2
                     dI2=(1-S0/S02)*I2
                     dI1=I1
-                if y1<y0 and x1<x0:
+                if y1<y0 and (x1+R2)<(x0-2*R1):
                     S0=S1+S2
                     dI1=(1-S0/S01)*I1
                     dI2=I2
-                if y1<y0 and x1>x0:
-                    S0=S1-S2
+                if y1<y0 and (x1-R2)>x0:
+                    S0=S2-S1
                     dI1=(1-S0/S01)*I1
                     dI2=I2
                     
@@ -183,10 +188,12 @@ class Chlenkita():
                 
             Is=str(a[1][j])
             ts=str(t)
-            my_file.write(ts+'          '+Is+'\n')
+            x11=str(x1)
+            y11=str(y1)
+            my_file.write(ts+'          '+Is+'          '+x11+'          '+y11+'\n')
 
-        for row in a:
-            print(' '.join([str(elem) for elem in row]))
+        #for row in a:
+           # print(' '.join([str(elem) for elem in row]))
            
         my_file.close()
         
