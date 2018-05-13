@@ -155,16 +155,21 @@ class Chlenkita():
             
             x1=200*ma.cos(t)-150+595
             y1=200*ma.sin(t)
-            if x1>x0:
-                x2=x1
-            else:
-                x2=x1
+            if y1>y0 and x1>(x0+R1):
+                x2=x1-ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
+            if y1>y0 and x1<=(x0+R1):
+                x2=x1+ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
+            if y1<y0 and x1>=(x0-R1):
+                x2=x1-ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
+            if y1<y0 and x1>(x0-R1):
+                x2=x1+ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
+
             l1=ma.fabs(x2-x0)
             l2=ma.fabs(x2-x1)
             if l1<=R1 and l2<=R2:
                 S11=R1*R1*ma.acos(l1/R1)
                 S12=l1*ma.sqrt(R1*R1-l1*l1)
-                S21=R2*R2*ma.acos(l2/R2)
+                S21=R2*R2*ma.fabs(ma.acos(l2/R2))
                 S22=l2*ma.sqrt(R2*R2-l2*l2)
                 if y1>y0 and x1>(x0+R1):
                     S10=S12-S11
@@ -228,8 +233,8 @@ class Chlenkita():
             y11=str(y1)
             my_file.write(ts+'          '+Is+'          '+x11+'          '+y11+'\n')
 
-        #for row in a:
-           # print(' '.join([str(elem) for elem in row]))
+        for row in a:
+           print(' '.join([str(elem) for elem in row]))
            
         my_file.close()
         
