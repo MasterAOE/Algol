@@ -133,14 +133,14 @@ class Chlenkita():
         I1=4*PI*R1*R1*sigma*T1*T1*T1*T1
         I2=4*PI*R2*R2*sigma*T2*T2*T2*T2
         
-        S01=PI*R1*R1
-        S02=PI*R2*R2
+        S1=PI*R1*R1
+        S2=PI*R2*R2
         
         T14=T1*T1*T1*T1
         T24=T2*T2*T2*T2
         I0=I1+I2
         
-        x0=395+R1
+        x0=395
         #y0=200+R1
         y0=0
         print(x0)
@@ -155,28 +155,64 @@ class Chlenkita():
             
             x1=200*ma.cos(t)-150+595
             y1=200*ma.sin(t)
-
-            
-            s=ma.fabs(x1-x0)
-            if s<=R1:
-                S1=R1*R1*ma.acos(s/R1)
-                S2=s*ma.sqrt(R1*R1-s*s)
-                if y1>y0 and (x1-R2)>x0:
-                    S0=S2-S1
-                    dI2=(1-S0/S02)*I2
+            if x1>x0:
+                x2=x1
+            else:
+                x2=x1
+            l1=ma.fabs(x2-x0)
+            l2=ma.fabs(x2-x1)
+            if l1<=R1 and l2<=R2:
+                S11=R1*R1*ma.acos(l1/R1)
+                S12=l1*ma.sqrt(R1*R1-l1*l1)
+                S21=R2*R2*ma.acos(l2/R2)
+                S22=l2*ma.sqrt(R2*R2-l2*l2)
+                if y1>y0 and x1>(x0+R1):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=(1-(S10+S20)/S2)*I2
                     dI1=I1
-                if y1>y0 and (x1+R2)<(x0-2*R1):
-                    S0=S1+S2
-                    dI2=(1-S0/S02)*I2
+                if y1>y0 and x1<=(x0+R1) and x1>=(x0+R1-R2):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=(1-(S20-S10)/S2)*I2
                     dI1=I1
-                if y1<y0 and (x1+R2)<(x0-2*R1):
-                    S0=S1+S2
-                    dI1=(1-S0/S01)*I1
-                    dI2=I2
-                if y1<y0 and (x1-R2)>x0:
-                    S0=S2-S1
-                    dI1=(1-S0/S01)*I1
-                    dI2=I2
+                if y1>y0 and x1<(x0+R1-R2) and x1>(x0-R1+R2):
+                    dI2=0
+                    dI1=I1
+                if y1>y0 and x1>=(x0+R1) and x1<=(x0+R1-R2):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=(1-(S20-S10)/S2)*I2
+                    dI1=I1
+                if y1>y0 and x1<(x0+R1):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=(1-(S10+S20)/S2)*I2
+                    dI1=I1
+                
+                if y1<y0 and x1>(x0+R1):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=(1-(S10+S20)/S1)*I2
+                    dI1=I1
+                if y1<y0 and x1<=(x0+R1) and x1>=(x0+R1-R2):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=(1-(S20-S10)/S1)*I2
+                    dI1=I1
+                if y1<y0 and x1<(x0+R1-R2) and x1>(x0-R1+R2):
+                    dI2=(1-S2/S1)*I1
+                    dI1=I1
+                if y1<y0 and x1>=(x0+R1) and x1<=(x0+R1-R2):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=(1-(S20-S10)/S1)*I1
+                    dI1=I1
+                if y1<0 and x1<(x0+R1):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=(1-(S10+S20)/S1)*I1
+                    dI1=I1
                     
                 I=dI1+dI2
                 a[1][j] = I
