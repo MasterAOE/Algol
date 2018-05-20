@@ -130,8 +130,8 @@ class Chlenkita():
         T1=3000
         T2=5000
         
-        I1=4*PI*R1*R1*sigma*T1*T1*T1*T1
-        I2=4*PI*R2*R2*sigma*T2*T2*T2*T2
+        I1=PI*R1*R1*sigma*T1*T1*T1*T1
+        I2=PI*R2*R2*sigma*T2*T2*T2*T2
         
         S1=PI*R1*R1
         S2=PI*R2*R2
@@ -157,9 +157,9 @@ class Chlenkita():
             y1=-200*ma.sin(t)
             if y1>y0 and x1>(x0+R1):
                 x2=x1-ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
-            if y1>y0 and x1<=(x0+R1):
+            if y1>=y0 and x1<=(x0+R1):
                 x2=x1+ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
-            if y1<y0 and x1>=(x0-R1):
+            if y1<=y0 and x1>=(x0-R1):
                 x2=x1-ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
             if y1<y0 and x1>(x0-R1):
                 x2=x1+ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
@@ -167,68 +167,67 @@ class Chlenkita():
             l1=ma.fabs(x2-x0)
             l2=ma.fabs(x2-x1)
             if l1<=R1 and l2<=R2:
-                S11=R1*R1*ma.acos(l1/R1)
+                S11=R1*R1*ma.fabs(ma.acos(l1/R1))
                 S12=l1*ma.sqrt(R1*R1-l1*l1)
                 S21=R2*R2*ma.fabs(ma.acos(l2/R2))
                 S22=l2*ma.sqrt(R2*R2-l2*l2)
-                if y1>=y0 and x1>(x0+R1):
+
+                if y1<=0 and x1<(x0+R1):
                     S10=S12-S11
                     S20=S22-S21
-                    dI2=(1-(S10-S20)/S2)*I2
+                    dI2=((S10+S20)/S1)*I2
                     dI1=I1
-                    a1=1
+                    a1=10
+                if y1<=y0 and x1>=(x0+R1-R2) and x1<=(x0+R1):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=((S20-S10)/S1)*I2
+                    dI1=I1
+                    a1=9
+                if y1<=y0 and x1<(x0+R1-R2) and x1>(x0-R1+R2):
+                    dI2=(S2/S1)*I1
+                    dI1=I1
+                    a1=8
+                if y1<=y0 and x1<=(x0+R1) and x1>=(x0+R1-R2):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=((S20-S10)/S1)*I2
+                    dI1=I1
+                    a1=7
+                if y1<=y0 and x1>(x0+R1):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=((S10+S20)/S1)*I2
+                    dI1=I1
+                    a1=6
+                if y1>=y0 and x1<(x0+R1):
+                    S10=S12-S11
+                    S20=S22-S21
+                    dI2=((S10-S20)/S2)*I2
+                    dI1=I1
+                    a1=5
                 if y1>=y0 and x1<=(x0+R1) and x1>=(x0+R1-R2):
                     S10=S12-S11
                     S20=S22-S21
-                    dI2=(1-(S20+S10)/S2)*I2
+                    dI2=((S20+S10)/S2)*I2
                     dI1=I1
-                    a1=2
+                    a1=4
                 if y1>=y0 and x1<(x0+R1-R2) and x1>(x0-R1+R2):
                     dI2=0
                     dI1=I1
                     a1=3
-                if y1>=y0 and x1>=(x0+R1) and x1<=(x0+R1-R2):
+                if y1>=y0 and x1<=(x0+R1) and x1>=(x0+R1-R2):
                     S10=S12-S11
                     S20=S22-S21
-                    dI2=(1-(S20+S10)/S2)*I2
+                    dI2=((S20+S10)/S2)*I2
                     dI1=I1
-                    a1=4
-                if y1>=y0 and x1<(x0+R1):
+                    a1=2
+                if y1>=y0 and x1>(x0+R1):
                     S10=S12-S11
                     S20=S22-S21
-                    dI2=(1-(S10-S20)/S2)*I2
+                    dI2=((S10-S20)/S2)*I2
                     dI1=I1
-                    a1=5
-                
-                if y1<=y0 and x1>(x0+R1):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=(1-(S10+S20)/S1)*I2
-                    dI1=I1
-                    a1=6
-                if y1<=y0 and x1<=(x0+R1) and x1>=(x0+R1-R2):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=(1-(S20-S10)/S1)*I2
-                    dI1=I1
-                    a1=7
-                if y1<=y0 and x1<(x0+R1-R2) and x1>(x0-R1+R2):
-                    dI2=(1-S2/S1)*I1
-                    dI1=I1
-                    a1=8
-                if y1<=y0 and x1>=(x0+R1-R2) and x1<=(x0+R1):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=(1-(S20-S10)/S1)*I1
-                    dI1=I1
-                    a1=9
-                if y1<=0 and x1<(x0+R1):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=(1-(S10+S20)/S1)*I1
-                    dI1=I1
-                    a1=10
-                    
+                    a1=1
                 I=dI1+dI2
                 print('I1')
                 print(dI1/I1)
@@ -248,7 +247,8 @@ class Chlenkita():
             ts=str(t)
             x11=str(x1)
             y11=str(y1)
-            my_file.write(ts+'          '+Is+'          '+x11+'          '+y11+'\n')
+            x22=str(x2)
+            my_file.write(ts+'          '+Is+'          '+x11+'          '+y11+'          '+x22+'\n')
 
        # for row in a:
           # print(' '.join([str(elem) for elem in row]))
