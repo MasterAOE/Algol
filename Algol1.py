@@ -92,13 +92,13 @@ class Animation(QtWidgets.QMainWindow) :
         qp=QtGui.QPainter()
         qp.begin(self)
         
-        self.x1=200*ma.cos(self.t)-150
+        self.x1=200*ma.cos(self.t)+395
         self.y1=200*ma.sin(self.t)
        # print (self.x1,self.y1, self.t)
 
     
         qp.drawEllipse(395,200,70,70)
-        qp.drawEllipse(595+self.x1,225+self.y1,20,20)
+        qp.drawEllipse(self.x1,225+self.y1,20,20)
         
         qp.end()
         
@@ -153,16 +153,10 @@ class Chlenkita():
             a[0][j] = t
             t+=0.01
             
-            x1=200*ma.cos(t)-150+595
-            y1=-200*ma.sin(t)
-            if y1>y0 and x1>(x0+R1):
-                x2=x1-ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
-            if y1>=y0 and x1<=(x0+R1):
-                x2=x1+ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
-            if y1<=y0 and x1>=(x0-R1):
-                x2=x1-ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
-            if y1<y0 and x1>(x0-R1):
-                x2=x1+ma.sqrt((R1*R1+(y1-y0)*(y1-y0)-R2*R2)/((y1-y0)*(y1-y0)))
+            x1=200*ma.cos(t)+x0
+            y1=200*ma.sin(t)+y0
+            
+            x2=(4*x1**3-4*x1*x1*x0-ma.sqrt(((4*x1**3+4*x1*x1*x0-4*x1*y0*y0+8*x1*y0*y1+4*x1*x0*x0-4*x1*y1*1+4*x1*R2*R2-4*x1*R1*R1-4*y0*y0*x0+8*y0*x0*y1-4*x0**3-4*x0*y1*y1-4*x0*R2*R2+4*x0*R1*R1)**2-4*(4*x1*x1-8*x1*x0+4*y0*y0-8*y0*y1+4*x0*x0+4*y1*y1)*(x1**4+2*x1*x1*y0*y0-4*x1*x1*y0*y1-2*x1*x1*x0*x0+2*x1*x1*y1*y1-2*x1*x1*R2*R2+2*x1*x1*R1*R1+y0**4-4*y0**3*y1+y0*y0*x0*x0+6*y0*y0*y1*y1-2*y0*y0*R2*R2-2*y0*y0*R2*R2-2*y0*y0*R1*R1-4*y0*x0*x0*y1-4*y0*y1**3+4*y0*y1*R2*R2+4*y0*y1*R1*R1+x0**4+2*x0*x0*y1*y1+2*x0*x0*R2*R2-2*x0*x0*R1*R1+y1**4-2*y1*y1*R2*R2-2*y1*y1*R1*R1+R2**4-2*R2*R2*R1*R1+R1**4)))+4*x1*y0-8*x1*y0*y1-4*x1*x0*x0+4*x1*y1*y1-4*x1*R2*R2+4*x1*R1*R1+4*y0*y0*x0-8*y0*x0*y1+4*x0**3+4*x0*y1*y1+4*x0*R2*R2-4*x0*R1*R1)/(2*(4*x1*x1-8*x1*x0+4*y0*y0-8*y0*y1+4*x0*x0+4*y1*y1))
 
             l1=ma.fabs(x2-x0)
             l2=ma.fabs(x2-x1)
@@ -171,70 +165,49 @@ class Chlenkita():
                 S12=l1*ma.sqrt(R1*R1-l1*l1)
                 S21=R2*R2*ma.fabs(ma.acos(l2/R2))
                 S22=l2*ma.sqrt(R2*R2-l2*l2)
-
-                if y1<=0 and x1<(x0+R1):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=((S10+S20)/S1)*I2
-                    dI1=I1
-                    a1=10
-                if y1<=y0 and x1>=(x0+R1-R2) and x1<=(x0+R1):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=((S20-S10)/S1)*I2
-                    dI1=I1
-                    a1=9
-                if y1<=y0 and x1<(x0+R1-R2) and x1>(x0-R1+R2):
-                    dI2=(S2/S1)*I1
-                    dI1=I1
-                    a1=8
-                if y1<=y0 and x1<=(x0+R1) and x1>=(x0+R1-R2):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=((S20-S10)/S1)*I2
-                    dI1=I1
-                    a1=7
-                if y1<=y0 and x1>(x0+R1):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=((S10+S20)/S1)*I2
-                    dI1=I1
-                    a1=6
-                if y1>=y0 and x1<(x0+R1):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=((S10-S20)/S2)*I2
-                    dI1=I1
-                    a1=5
-                if y1>=y0 and x1<=(x0+R1) and x1>=(x0+R1-R2):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=((S20+S10)/S2)*I2
-                    dI1=I1
-                    a1=4
-                if y1>=y0 and x1<(x0+R1-R2) and x1>(x0-R1+R2):
-                    dI2=0
-                    dI1=I1
-                    a1=3
-                if y1>=y0 and x1<=(x0+R1) and x1>=(x0+R1-R2):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=((S20+S10)/S2)*I2
-                    dI1=I1
-                    a1=2
-                if y1>=y0 and x1>(x0+R1):
-                    S10=S12-S11
-                    S20=S22-S21
-                    dI2=((S10-S20)/S2)*I2
-                    dI1=I1
-                    a1=1
+                S01=S11-S12
+                S02=S21-S22
+                
+                if x1>(R1+R2+x0) or x1<(-R1-R2+x0):
+                        dI1=I1
+                        dI2=I2
+                if y1>=y0 and x1>(R1+x0) and x1<(R1+R2+x0):
+                        dI1=I1
+                        dI2=(1-(S01+S02)/S2)*I2
+                if y1>=y0 and x1>(R1-R2+x0) and x1<(R1+x0):
+                        dI1=I1
+                        dI2=ma.fabs(S01-S02)/S2*I2
+                if y1>=y0 and x1>(-R1+R2+x0) and x1<(R1-R2+x0):
+                        dI1=I1
+                        dI2=0
+                if y1>=y0 and x1>(-R1+x0) and x1<(-R1+R2+x0):
+                        dI1=I1
+                        dI2=ma.fabs(S01-S02)/S2*I2
+                if y1>=y0 and x1>(-R1-R2+x0) and x1<(-R1+x0):
+                        dI1=I1
+                        dI2=(1-(S01+S02)/S2)*I2
+    
+                if y1<y0 and x1>(R1+x0) and x1<(R1+R2+x0):
+                        dI2=I2
+                        dI1=(1-(S01+S02)/S1)*I1
+                if y1<y0 and x1>(R1-R2+x0) and x1<(R1+x0):
+                        dI2=I2
+                        dI1=(1-ma.fabs(S01-S02))/S1*I1
+                if y1<y0 and x1>(-R1+R2+x0) and x1<(R1-R2+x0):
+                        dI2=I2
+                        dI1=(1-S2/S1)*I1
+                if y1<y0 and x1>(-R1+x0) and x1<(-R1+R2+x0):
+                        dI2=I2
+                        dI1=(1-ma.fabs(S01-S02))/S1*I1
+                if y1<y0 and x1>(-R1-R2+x0) and x1<(-R1+x0):
+                        dI2=I2
+                        dI1=(1-(S01+S02)/S1)*I1
                 I=dI1+dI2
                 print('I1')
                 print(dI1/I1)
                 print('I2')
                 print(dI2/I2)
-                print('a')
-                print(a1)
+
                 
                 a[1][j] = I
                 
