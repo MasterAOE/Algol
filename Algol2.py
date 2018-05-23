@@ -59,7 +59,7 @@ class Animation(QtWidgets.QMainWindow) :
         self.labelt1 = QtWidgets.QLabel("T1:",self)
         self.labelt1.move(20,310)
         
-        self.paramt2 = QtWidgets.QLineEdit("15000",self)
+        self.paramt2 = QtWidgets.QLineEdit("3000",self)
         self.paramt2.move(70,350)
         
         self.labelt2 = QtWidgets.QLabel("T2:",self)
@@ -79,32 +79,32 @@ class Animation(QtWidgets.QMainWindow) :
         
         a_str = self.parama.text() 
 
-        a=float(str(a_str))
+        self.a=float(str(a_str))
         
         P_str = self.paramp.text() 
 
 
-        P=float(str(P_str))
+        self.P=float(str(P_str))
         
         M_str = self.paramm.text() 
 
-        M=float(str(M_str)) 
+        self.M=float(str(M_str)) 
         
         R1_str = self.paramr1.text() 
 
-        R1=float(str(R1_str)) 
+        self.R1=float(str(R1_str)) 
         
         R2_str = self.paramr2.text() 
         
-        R2=float(str(R2_str)) 
+        self.R2=float(str(R2_str)) 
         
         T1_str = self.paramt1.text() 
 
-        T1=float(str(T1_str)) 
+        self.T1=float(str(T1_str)) 
         
         T2_str = self.paramt2.text() 
 
-        T2=float(str(T2_str)) 
+        self.T2=float(str(T2_str)) 
         
         
         self.x1=0.0
@@ -128,49 +128,10 @@ class Animation(QtWidgets.QMainWindow) :
         qp.end()
         
         
-    def onTimer(self) :
-        
-        self.t+=0.1
-        self.update()
-        self.j+=1
-        self.b[0][self.j] = self.t
-
-            
-        self.x1=200*ma.cos(self.t)+self.x0
-        self.y1=200*ma.sin(self.t)+self.y0
-
-                
-                
-        if self.x1>(self.R1+self.R2+self.x0) or self.x1<(-self.R1-self.R2+self.x0):
-                        dI1=self.I1
-                        dI2=self.I2
-               
-        if self.y1>=self.y0 and self.x1>(-self.R1+self.R2+self.x0) and self.x1<(self.R1-self.R2+self.x0):
-                        dI1=self.I1
-                        dI2=0
-               
-    
-        if self.y1<self.y0 and self.x1>(-self.R1+self.R2+self.x0) and self.x1<(self.R1-self.R2+self.x0):
-                        dI2=self.I2
-                        dI1=(1-self.S2/self.S1)*self.I1
-
-               
-        I=dI1+dI2
-
-                
-        self.b[1][self.j] = I
-                
-
-                
-        Is=str(self.b[1][self.j])
-        ts=str(self.t)
-        x11=str(self.x1)
-        y11=str(self.y1)
-            
-        self.my_file.write(ts+'          '+Is+'          '+x11+'          '+y11+'\n')
     def onStart(self) :
         
         self.t=0.0
+        self.j=0
         self.timer.start()
         self.b = [[0] * 1000 for i in range(2)]
         self.I1=PI*self.R1*self.R1*sigma*self.T1*self.T1*self.T1*self.T1
@@ -185,7 +146,48 @@ class Animation(QtWidgets.QMainWindow) :
         self.y0=0
         self.j=0
         self.my_file = open('Algol.txt', 'w')
+        
+    def onTimer(self) :
+        
+        self.t+=0.1
+        self.update()
+        self.j+=1
+        self.b[0][self.j] = self.t
 
+            
+        self.x1=200*ma.cos(self.t)+self.x0
+        self.y1=200*ma.sin(self.t)+self.y0
+
+                
+                
+        if self.x1>(self.R1+self.R2+self.x0) or self.x1<(-self.R1-self.R2+self.x0):
+                        self.dI1=self.I1
+                        self.dI2=self.I2
+               
+        if self.y1>=self.y0 and self.x1>(-self.R1+self.R2+self.x0) and self.x1<(self.R1-self.R2+self.x0):
+                        self.dI1=self.I1
+                        self.dI2=0
+               
+    
+        if self.y1<self.y0 and self.x1>(-self.R1+self.R2+self.x0) and self.x1<(self.R1-self.R2+self.x0):
+                        self.dI2=self.I2
+                        self.dI1=(1-self.S2/self.S1)*self.I1
+
+               
+        I=self.dI1+self.dI2
+
+                
+        self.b[1][self.j] = I
+                
+
+                
+        Is=str(self.b[1][self.j])
+        ts=str(self.t)
+        x11=str(self.x1)
+        y11=str(self.y1)
+            
+        self.my_file.write(ts+'          '+Is+'          '+x11+'          '+y11+'\n')
+        
     def onStop(self) :
         self.timer.stop()
         self.my_file.close()
