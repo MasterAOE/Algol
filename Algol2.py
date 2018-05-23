@@ -119,7 +119,9 @@ class Animation(QtWidgets.QMainWindow) :
 
         self.T2=float(str(T2_str)) 
 
-
+        self.data = [random.random() for i in range(10)]
+        
+        
         self.P=ma.sqrt(2*PI*(self.a*ae)**3/G/((self.m1+self.m2)*Ms))
         self.P1=int(self.P/3600/24*100)/100
         self.P2=str(self.P1)
@@ -129,7 +131,7 @@ class Animation(QtWidgets.QMainWindow) :
         self.x1=0.0
         self.y1=0.0
         self.t=0.0
-        'self.initUI()'
+        self.initUI()
         
         
     def paintEvent(self,ev) :
@@ -156,8 +158,6 @@ class Animation(QtWidgets.QMainWindow) :
         self.timer.start()
         self.initUI()
         self.b = [[0] * 10000 for i in range(2)]
-        self.c = [[0] * 10000]
-        self.d = [[0] * 10000]
         self.I1=PI*self.R1*self.R1*sigma*self.T1*self.T1*self.T1*self.T1
         self.I2=PI*self.R2*self.R2*sigma*self.T2*self.T2*self.T2*self.T2
         
@@ -248,10 +248,7 @@ class Animation(QtWidgets.QMainWindow) :
         for i in range(self.N):
             self.c[i]=self.b[0][i]
             self.d[i]=self.b[1][i]
-        'def initUI(self):'  
-        self.m = PlotCanvas(self, width=5, height=4)
-        self.m.move(850,50)
-        self.show()
+
         self.my_file.close()
         
         
@@ -280,9 +277,9 @@ class PlotCanvas(FigureCanvas):
  
  
     def plot(self):
-        self.data = [random.random() for i in range(10)]
+        #data = [random.random() for i in range(10)]
         ax = self.figure.add_subplot(111)
-        ax.plot(self.c, self.d, 'r-')
+        ax.plot(self.data, 'r-')
         ax.set_title('Кривая блеска')
         self.draw()
 
