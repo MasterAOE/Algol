@@ -13,8 +13,8 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 g=9.8
 RAD = ma.pi/180
 PI = ma.pi
-sigma=1
-
+sigma=5.67*10**(-8)
+G=6.67*10**(-11)
 
 class Animation(QtWidgets.QMainWindow) :
     def __init__(self) :
@@ -22,45 +22,45 @@ class Animation(QtWidgets.QMainWindow) :
         self.resize(1000, 800)
         self.setWindowTitle('Circ')
         
-        self.parama = QtWidgets.QLineEdit("50",self)
-        self.parama.move(70,70)
+        self.parama = QtWidgets.QLineEdit("150",self)
+        self.parama.move(100,70)
         
         self.labela = QtWidgets.QLabel("a:",self)
         self.labela.move(20,70)
         
         
-        self.paramp = QtWidgets.QLineEdit("10",self)
-        self.paramp.move(70,150)
+        self.paramm1 = QtWidgets.QLineEdit("10",self)
+        self.paramm1.move(100,150)
       
-        self.labelp = QtWidgets.QLabel("P:",self)
-        self.labelp.move(20,150)
+        self.labelm1 = QtWidgets.QLabel("m1,M солнца:",self)
+        self.labelm1.move(20,150)
         
-        self.paramm = QtWidgets.QLineEdit("5",self)
-        self.paramm.move(70,190)
+        self.paramm2 = QtWidgets.QLineEdit("5",self)
+        self.paramm2.move(100,190)
         
-        self.labelm = QtWidgets.QLabel("M1/M2:",self)
-        self.labelm.move(20,190)
+        self.labelm2 = QtWidgets.QLabel("m2,M солнца",self)
+        self.labelm2.move(20,190)
         
         self.paramr1 = QtWidgets.QLineEdit("70",self)
-        self.paramr1.move(70,230)
+        self.paramr1.move(100,230)
         
-        self.labelr1 = QtWidgets.QLabel("R1:",self)
+        self.labelr1 = QtWidgets.QLabel("R1,тыс.км:",self)
         self.labelr1.move(20,230)
         
         self.paramr2= QtWidgets.QLineEdit("20",self)
-        self.paramr2.move(70,270)
+        self.paramr2.move(100,270)
         
-        self.labelr2 = QtWidgets.QLabel("R2:",self)
+        self.labelr2 = QtWidgets.QLabel("R2,тыс.км:",self)
         self.labelr2.move(20,270)
         
         self.paramt1 = QtWidgets.QLineEdit("5000",self)
-        self.paramt1.move(70,310)
+        self.paramt1.move(100,310)
        
         self.labelt1 = QtWidgets.QLabel("T1:",self)
         self.labelt1.move(20,310)
         
         self.paramt2 = QtWidgets.QLineEdit("3000",self)
-        self.paramt2.move(70,350)
+        self.paramt2.move(100,350)
         
         self.labelt2 = QtWidgets.QLabel("T2:",self)
         self.labelt2.move(20,350)
@@ -81,14 +81,14 @@ class Animation(QtWidgets.QMainWindow) :
 
         self.a=float(str(a_str))
         
-        P_str = self.paramp.text() 
+        m1_str = self.paramm1.text() 
 
 
-        self.P=float(str(P_str))
+        self.m1=float(str(m1_str))
         
-        M_str = self.paramm.text() 
+        m2_str = self.paramm2.text() 
 
-        self.M=float(str(M_str)) 
+        self.m2=float(str(m2_str)) 
         
         R1_str = self.paramr1.text() 
 
@@ -117,19 +117,22 @@ class Animation(QtWidgets.QMainWindow) :
         qp=QtGui.QPainter()
         qp.begin(self)
         
-        self.x1=200*ma.cos(self.t)+395
-        self.y1=200*ma.sin(self.t)
+        self.x1=self.a*ma.cos(self.t)+self.x0
+        self.y1=self.a*ma.sin(self.t)+self.y0
        # print (self.x1,self.y1, self.t)
 
     
-        qp.drawEllipse(395,200,70,70)
-        qp.drawEllipse(self.x1,225+self.y1,20,20)
+        qp.drawEllipse(self.x0,self.y0,self.R1,self.R1)
+        qp.drawEllipse(self.x1,self.y1,self.R2,self.R2)
         
+        pts= [ QtCore.QPointF(self.b[i][i]) for i in range(0,self.N) ]
+        
+        qp.drawPolygon( QtGui.QPolygonF(pts))
         qp.end()
         
         
     def onStart(self) :
-        
+        self.N=1
         self.t=0.0
         self.j=0
         self.timer.start()
@@ -143,12 +146,12 @@ class Animation(QtWidgets.QMainWindow) :
         self.I0=self.I1+self.I2
 
         self.x0=395
-        self.y0=0
+        self.y0=200
         self.j=0
         self.my_file = open('Algol.txt', 'w')
-        
+        self.P=ma.sqrt(2*PI*self.a**3/G/(self.m1+self.m2))
     def onTimer(self) :
-        
+        self.N+=1
         self.t+=0.1
         self.update()
         self.j+=1
