@@ -129,7 +129,7 @@ class Animation(QtWidgets.QMainWindow) :
         self.x1=0.0
         self.y1=0.0
         self.t=0.0
-
+        self.initUI()
         
         
     def paintEvent(self,ev) :
@@ -245,11 +245,10 @@ class Animation(QtWidgets.QMainWindow) :
         
  
     def initUI(self):
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
+
  
         m = PlotCanvas(self, width=5, height=4)
-        m.move(0,0)
+        m.move(1000,50)
  
         self.show()
     
