@@ -9,20 +9,33 @@ Created on Fri Dec 15 16:41:58 2017
 import sys
 import math as ma
 import numpy as np
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+
+import sys
+ 
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+from PyQt5.QtGui import QIcon
+ 
+import random
+ 
+
 from PyQt5 import QtGui, QtCore, QtWidgets
 g=9.8
 RAD = ma.pi/180
 PI = ma.pi
 sigma=5.67*10**(-8)
 G=6.67*10**(-11)
-
+Ms=2*10**30
+ae=150*10**9
 class Animation(QtWidgets.QMainWindow) :
     def __init__(self) :
         QtWidgets.QMainWindow.__init__(self)
-        self.resize(1000, 800)
-        self.setWindowTitle('Circ')
+        self.resize(1500, 800)
+        self.setWindowTitle('Algol')
         
-        self.parama = QtWidgets.QLineEdit("150",self)
+        self.parama = QtWidgets.QLineEdit("10",self)
         self.parama.move(100,70)
         
         self.labela = QtWidgets.QLabel("a:",self)
@@ -38,7 +51,7 @@ class Animation(QtWidgets.QMainWindow) :
         self.paramm2 = QtWidgets.QLineEdit("5",self)
         self.paramm2.move(100,190)
         
-        self.labelm2 = QtWidgets.QLabel("m2,M солнца",self)
+        self.labelm2 = QtWidgets.QLabel("m2,M солнца:",self)
         self.labelm2.move(20,190)
         
         self.paramr1 = QtWidgets.QLineEdit("70",self)
@@ -105,11 +118,18 @@ class Animation(QtWidgets.QMainWindow) :
         T2_str = self.paramt2.text() 
 
         self.T2=float(str(T2_str)) 
-        
+
+
+        self.P=ma.sqrt(2*PI*(self.a*ae)**3/G/((self.m1+self.m2)*Ms))
+        self.P1=int(self.P/3600/24*100)/100
+        self.P2=str(self.P1)
+        self.labelP = QtWidgets.QLabel("P="+self.P2+"сут.",self)
+        self.labelP.move(20,500)
         
         self.x1=0.0
         self.y1=0.0
         self.t=0.0
+
         
         
     def paintEvent(self,ev) :
@@ -117,17 +137,14 @@ class Animation(QtWidgets.QMainWindow) :
         qp=QtGui.QPainter()
         qp.begin(self)
         
-        self.x1=self.a*ma.cos(self.t)+self.x0
-        self.y1=self.a*ma.sin(self.t)+self.y0
+        self.x1=self.a*20*ma.cos(self.t)+self.x0
+        self.y1=self.a*20*ma.sin(self.t)+self.y0
        # print (self.x1,self.y1, self.t)
 
     
         qp.drawEllipse(self.x0,self.y0,self.R1,self.R1)
         qp.drawEllipse(self.x1,self.y1,self.R2,self.R2)
         
-        pts= [ QtCore.QPointF(self.b[i][i]) for i in range(0,self.N) ]
-        
-        qp.drawPolygon( QtGui.QPolygonF(pts))
         qp.end()
         
         
@@ -145,15 +162,45 @@ class Animation(QtWidgets.QMainWindow) :
 
         self.I0=self.I1+self.I2
 
-        self.x0=395
+        self.x0=500
         self.y0=200
         self.j=0
+        
+        a_str = self.parama.text() 
+
+        self.a=float(str(a_str))
+        
+        m1_str = self.paramm1.text() 
+
+
+        self.m1=float(str(m1_str))
+        
+        m2_str = self.paramm2.text() 
+
+        self.m2=float(str(m2_str)) 
+        
+        R1_str = self.paramr1.text() 
+
+        self.R1=float(str(R1_str)) 
+        
+        R2_str = self.paramr2.text() 
+        
+        self.R2=float(str(R2_str)) 
+        
+        T1_str = self.paramt1.text() 
+
+        self.T1=float(str(T1_str)) 
+        
+        T2_str = self.paramt2.text() 
+
+        self.T2=float(str(T2_str)) 
+        
         self.my_file = open('Algol.txt', 'w')
-        self.P=ma.sqrt(2*PI*self.a**3/G/(self.m1+self.m2))
+        self.update()
+        
     def onTimer(self) :
         self.N+=1
         self.t+=0.1
-        self.update()
         self.j+=1
         self.b[0][self.j] = self.t
 
@@ -190,12 +237,43 @@ class Animation(QtWidgets.QMainWindow) :
         y11=str(self.y1)
             
         self.my_file.write(ts+'          '+Is+'          '+x11+'          '+y11+'\n')
-        
+        self.update()
     def onStop(self) :
         self.timer.stop()
         self.my_file.close()
+        
+ 
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+ 
+        m = PlotCanvas(self, width=5, height=4)
+        m.move(0,0)
+ 
+        self.show()
     
-
+class PlotCanvas(FigureCanvas):
+ 
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+ 
+        FigureCanvas.__init__(self, fig)
+        self.setParent(parent)
+ 
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.plot()
+ 
+ 
+    def plot(self):
+        data = [random.random() for i in range(25)]
+        ax = self.figure.add_subplot(111)
+        ax.plot(data, 'r-')
+        ax.set_title('PyQt Matplotlib Example')
+        self.draw()
 
 app = QtWidgets.QApplication(sys.argv)
 
