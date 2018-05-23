@@ -130,7 +130,7 @@ class Animation(QtWidgets.QMainWindow) :
         self.x1=0.0
         self.y1=0.0
         self.t=0.0
-        #self.initUI()
+        self.initUI()
         self.N=0
         
     def paintEvent(self,ev) :
@@ -253,7 +253,7 @@ class Animation(QtWidgets.QMainWindow) :
         self.initUI()
     def initUI(self):
 
-        m = PlotCanvas(self, width=5, height=4)
+        m = PlotCanvas(self, width=5, height=5)
         m.move(850,50)
  
         self.show()
@@ -263,7 +263,6 @@ class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=120):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
- 
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
  
