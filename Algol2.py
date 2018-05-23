@@ -139,7 +139,7 @@ class Animation(QtWidgets.QMainWindow) :
         
         self.x1=self.a*20*ma.cos(self.t)+self.x0
         self.y1=self.a*20*ma.sin(self.t)+self.y0
-       # print (self.x1,self.y1, self.t)
+
 
     
         qp.drawEllipse(self.x0,self.y0,self.R1,self.R1)
@@ -154,7 +154,9 @@ class Animation(QtWidgets.QMainWindow) :
         self.t=0.0
         self.j=0
         self.timer.start()
-        self.b = [[0] * 1000 for i in range(2)]
+        self.b = [[0] * 10000 for i in range(2)]
+        self.c = [[0] * 10000]
+        self.d = [[0] * 10000]
         self.I1=PI*self.R1*self.R1*sigma*self.T1*self.T1*self.T1*self.T1
         self.I2=PI*self.R2*self.R2*sigma*self.T2*self.T2*self.T2*self.T2
         
@@ -242,19 +244,26 @@ class Animation(QtWidgets.QMainWindow) :
     def onStop(self) :
         self.timer.stop()
         self.my_file.close()
-        
+        for i in range(self.N):
+            self.c[i]=self.b[0][i]
+            self.d[i]=self.b[1][i]
+        def initUI(self):  
+            m = PlotCanvas(self, width=5, height=4)
+            m.move(850,50)
  
+            self.show()
+        
     def initUI(self):
 
  
         m = PlotCanvas(self, width=5, height=4)
-        m.move(1000,50)
+        m.move(850,50)
  
         self.show()
     
 class PlotCanvas(FigureCanvas):
  
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
+    def __init__(self, parent=None, width=5, height=4, dpi=120):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
  
@@ -269,10 +278,10 @@ class PlotCanvas(FigureCanvas):
  
  
     def plot(self):
-        data = [random.random() for i in range(25)]
+        data = [random.random() for i in range(10)]
         ax = self.figure.add_subplot(111)
-        ax.plot(data, 'r-')
-        ax.set_title('PyQt Matplotlib Example')
+        ax.plot(self.c, self.d, 'r-')
+        ax.set_title('Кривая блеска')
         self.draw()
 
 app = QtWidgets.QApplication(sys.argv)
