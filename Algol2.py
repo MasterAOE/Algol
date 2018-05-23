@@ -145,6 +145,7 @@ class Animation(QtWidgets.QMainWindow) :
         qp.drawEllipse(self.x0,self.y0,self.R1,self.R1)
         qp.drawEllipse(self.x1,self.y1,self.R2,self.R2)
         
+        
         qp.end()
         
         
